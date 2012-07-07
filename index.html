@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <title>{{ blog.title }} - {{ blog.description }}</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1"/>
+  <meta name="generator" content="{{ app_url }}" />
+  <link rel="stylesheet" href="{{ blog.blog_path }}style.css" media="all" type="text/css" />
+  <link rel="alternate" href="{{ blog.blog_path }}index.rss" type="application/rss+xml" title="{{ blog.title }} RSS" />
+</head>
+
+<body>
+
+  <div class="container">
+
+    <header>
+      <h1><a href="{{ blog.url }}">{{ blog.title }}</a></h1>
+      <h2>{{ blog.description }}</h2>
+    </header>
+
+    <div id="content" role="main">
+      {% for entry in entries[:15] %}
+      <article class="post" id="entry-{{ entry.id }}">
+        <h2><a href="{{ entry.url }}">{{ entry.title }}</a></h2>
+        <p class="meta">Publicerad {{ entry.date }} <time>{{ entry.time }}</time> i <a href="{{ entry.category_link }}">{{ entry.category_name }}</a></p>
+        <div class="entrybody">{{ entry.body }}</div>
+        <div class="entrymeta">
+          <a href="{{ entry.url }}#comment">Kommentarer ({{ entry.comment_count }})</a> 
+
+          <a href="" rel="tag"></a>
+
+        </div>
+      </article>
+      <!--### loop AD do not remove or move ###-->
+      {% endfor %}
+    </div>
+
+    <div id="sidebar" role="secondary">
+
+      <div id="profile">
+
+        {% if profile %}
+        <h4>Om</h4>
+        <a href="http://profile.publishme.se/profile/view/{{ profile.id }}/"><img class="thumbnail" src="{{ blog.blog_path }}profile.jpg" alt="Min profilbild" /></a>
+        <p><a href="http://profile.publishme.se/profile/view/{{ profile.id }}/"><span style="font-weight:bold"> {{ profile.name }}</span></a></p>
+        <p>{{ profile.description }}</p>
+        {% endif %}
+
+      </div>
+
+
+      <form action="http://www.google.se/search" name="search" method="get">
+        <input type="hidden" name="sitesearch" value="{{ blog.absolute_url }}" />
+        <p id="form-wrapper">
+          <input type="text" name="q" id="criteria" placeholder="Sök i bloggen" value="" size="12" maxlength="64" />
+          <input type="submit" id="search_btn" value="Sök" />
+        </p>
+      </form>
+
+      <section id="latest_posts">
+        <h4>Senaste inläggen</h4>
+        <ul>
+          {% for entry in entries[:20] %}
+          <li><a href="{{ entry.url }}">{{ entry.title }}</a></li>
+          {% endfor %}
+        </ul>
+      </section>
+
+      <section id="categories">
+        <h4>Kategorier</h4>
+        <ul>
+          {% for category in categories %}
+          <li><a href="{{ category.url }}">{{ category.name }}</a></li>
+          {% endfor %}
+        </ul>
+      </section>
+
+      <section id="archive">
+        <h4>Arkiv</h4>
+        <ul>
+          {% for month in archive_months %}
+          <li><a href="{{ month.link }}">{{ month.name }}</a></li>
+          {% endfor %}
+        </ul>
+      </section>
+
+      {% if linklist %}
+      <section id="links">
+        <h4>Länkar</h4>
+        <ul>
+          {% for link in linklist %}
+          <li><a href="{{ link.url }}" title="{{ link.description }}">{{ link.name }}</a></li>
+          {% endfor %}
+        </ul>
+      </section>
+      {% endif %}
+
+      {% if booklist %}
+      <section id="books">
+        <h4>Böcker</h4>
+        <ul class="items">
+          {% for book in booklist %}
+          <li><a href="{{ book.url }}"><img class="thumbnail" src="{{ book.image }}" border="0" alt="{{ book.name }}" title="{{ book.name }}" /></a><br /><a href="{{ book.url }}">{{ book.name }}</a></li>
+          {% endfor %}
+        </ul>
+      </section>
+      {% endif %}
+
+      {% if musiclist %}
+      <section id="music">
+        <h4>Musik</h4>
+        <ul class="items">
+          {% for music in musiclist %}
+          <li><a href="{{ music.url }}"><img class="thumbnail" src="{{ music.image }}" border="0" alt="{{ music.name }}" title="{{ music.name }}" /></a><br /><a href="{{ music.url }}">{{ music.name }}</a></li>
+          {% endfor %}
+        </ul>
+      </section>
+      {% endif %}
+
+      {% if movielist %}
+      <section id="movies">
+        <h4>Filmer</h4>
+        <ul class="items">
+          {% for movie in movielist %}
+          <li><a href="{{ movie.url }}"><img class="thumbnail" src="{{ movie.image }}" border="0" alt="{{ movie.name }}" title="{{ movie.name }}" /></a><br /><a href="{{ movie.url }}">{{ movie.name }}</a></li>
+          {% endfor %}
+        </ul>
+      </section>
+      {% endif %}
+
+
+      <section id="subscribe">
+        <h4>Prenumerera och dela</h4>
+        <ul class="services">
+          <li class="rss"><a href="{{ blog.blog_path }}index.rss" title="RSS">via RSS</a></li>
+        </ul>
+      </section>
+    </div>
+  </div>
+  <footer>
+    {{ blog.title }} - {{ blog.description }}
+  </footer>
+  <img src="http://stats.blogg.se/?id={{ blog.site_id }}" border="0" width="0" height="0" alt="" />
+  <script src='http://static.blogg.se/public/js/footer.js?id={{ blog.id }}' type='text/javascript'></script>
+</body>
+</html>
